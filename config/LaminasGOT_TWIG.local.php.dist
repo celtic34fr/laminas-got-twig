@@ -1,0 +1,36 @@
+<?php
+
+use LaminasGOT_TWIG\TwigExtensions\LayoutTwigExtension;
+use LaminasGOT_TWIG\TwigExtensions\SwitchTwigExtension;
+use Twig\Extension\DebugExtension;
+
+return [
+    'gotParameters' => [
+        'sessionParms' => [
+            'remember_me_seconds' => 3600, // 2 heures de temps de vie (rememberMe)
+            'gc_maxlifetime' => 14400,     // 4 heures de temps de vie max
+            'gc_divisor' => 1,
+            'use_cookies' => true,
+            'cookie_httponly' => true,
+        ],
+        "version"       => "V0.3.1",
+        "ref"           => "202009",
+        "template_ext"  => "twig",
+    ],
+    'zfctwig' => [
+        'extensions' => [
+            // extension à activer pour avoir accès à la directive dump(var) de Twig
+            'debug'            => DebugExtension::class,
+//            /** extension tag Switch refusé par F.Pontencier */
+//            'switch'          => SwitchTwigExtension::class,
+            /** Template Base Twig Extension  */
+            'layout'            => LayoutTwigExtension::class,
+            /** test */
+            'switch'            => SwitchTwigExtension::class,
+        ],
+        'environment_options' => [
+            'cache' => false, // pas de cache, tout modèle reconstruit à chaque affichage
+            'debug' => true,
+        ],
+    ],
+];

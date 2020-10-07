@@ -1,0 +1,25 @@
+{# paramétrage :
+    infoBulle.setIB : booléen indiquant la mise en place ou non du tooptip/popover (quelque chose à afficher)
+    id              : selectetur jQuery ou devra être positionné le tooltip ou le popover
+    infoBulle       : tableau de paramètrage du tooltip ou du popover
+#}
+{% if infoBulle.setIB %}
+<script>
+    $(document).ready(function (e) {
+        $("#{{ id }}").{{ infoBulle.type }}({
+            animation: {{ infoBulle.animation }},
+            html: {{ infoBulle.html }},
+            placement: '{{ infoBulle.placement }}',
+            delay: {
+                show: {{ infoBulle.delay.show }},
+                hide: {{ infoBulle.delay.hide }},
+            },
+            title: '{{ infoBulle.title|raw }}{% if infoBulle.type == 'tooltip' and infoBulle.content is not empty %} {{ infoBulle.content|raw }}{% endif %}',
+            {% if infoBulle.type == 'popover' %}
+            content: '{{ infoBulle.content|raw }}',
+            {% endif %}
+            trigger: '{{ infoBulle.trigger }}',
+        });
+});
+</script>
+{% endif %}

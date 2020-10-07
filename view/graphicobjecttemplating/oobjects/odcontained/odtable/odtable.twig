@@ -1,0 +1,144 @@
+{# template de l'objet ODTable  #}
+
+{% set objClasses = 'gotObject hidden ' ~ objet.id ~ " " ~ objet.classes %}
+{% set btnActions = false %}
+{% if objet.btnActions is not empty %} {% set btnActions = true %} {% endif %}
+
+<div id="{{ objet.id }}" class="{{ objClasses }}" data-objet="{{ objet.object }}" data-display="{{ objet.display }}"
+data-widthbt="{{ objet.widthBT }}" data-pager={{ objet.pagination }} >
+    <style>
+        #{{ objet.id }} .navBtn .btn {
+            margin: 0.8em 0 !important;
+        }
+
+        div#{{ objet.id }} table,
+        div#{{ objet.id }} table tr,
+        div#{{ objet.id }} table tr td,
+        div#{{ objet.id }} table tr th {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        div#{{ objet.id }} table tr td,
+        div#{{ objet.id }} table tr th {
+            padding: 0.3em;
+        }
+
+        {% for col in objet.cols %}
+            {% if col.width is defined and col.width is not empty %}
+        div#{{ objet.id }} table .cno{{ loop.index }} { width: {{ col.width }}; }
+            {% endif %}
+        {% endfor %}
+
+        td .BAright {
+            float: right;
+            position: relative;
+            margin-left: 0.5em;
+        }
+
+        td .BAleft {
+            float: left;
+            position: relative;
+            margin-left: 0.5em;
+        }
+
+        .ico-custom:before {
+            top: 0em !important;
+            left: 0em !important;
+        }
+
+        {% for btnAction, params in objet.btnActions %}
+        .{{ btnAction }} .width {
+            width: {{ objet.btnActionWidth }} !important;
+        }
+        .{{ btnAction }} .height {
+            height: {{ objet.btnActionHeight }} !important;
+        }
+        {% endfor %}
+
+    </style>
+    {% if objet.pagination %}
+    <div class="length col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        {{ gotRender(objet.objLength) }}
+    </div>
+    {% endif %}
+
+    <table id="{{ objet.id }}_table"  style="width: 100% !important;" class="lno0 cno0 {{ objClass }} {{ objet.tableClasses }}" data-lno="0" data-cno="0">
+        {% if objet.title is not empty %}
+            <caption>{{ objet.title }}</caption>
+        {% endif %}
+        {% if objet.header %}
+        <thead class="{{ objet.id }}">
+            <tr class="line">
+                {% for col in objet.cols %}
+                    {% if col.view == true %}
+                        <th class="col cno{{ loop.index }}" data-col="{{ loop.index }}">{{ col.libel | trim }}</th>
+                    {% endif %}
+                {% endfor %}
+                {% if btnActions %}
+                    <th class="col cnoActions" data-col="action">Actions</th>
+                {% endif %}
+            </tr>
+        </thead>
+        {% endif %}
+        <tbody class="{{ objet.id }}">
+            <tr class="line nodata {% if objet.datas|length > 0 %}hide{% endif %}">
+                {% set colspan = objet.cols|length %}
+                {% if objet.btnActions is not empty %} {% set colspan = colspan + 1 %} {% endif %}
+                <td colspan="{{ colspan }}" style="text-align: center">No data to show</td>
+            </tr>
+        {% if objet.datas|length > 0 %}
+            {% for lno, data in objet.datas %}
+                {% if data['view'] == true %}
+                    {% set key = 'line' ~ lno %}
+                    {% set lineClasses = objet.classesTab[key] %}
+            <tr class="line lno{{ lno }} {{ lineClasses }}" data-lno="{{ lno }}" {% if objet.isRow %} id="{{ objet.data[0] }}" {% endif %}>
+                        {% for cno, col in data %}
+                            {% if cno > 0 %}
+                                {% if objet.cols[cno].view == true %}
+                                    {% set key = 'col' ~ cno %}
+                                    {% set colClasses = objet.classesTab[key] %}
+                <td class="col cno{{ cno }} {{ colClasses }}" data-cno="{{ cno }}">{{ col | trim | raw }}</td>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                {% if btnActions %}
+                    <td class="col  {% if objet.btnsLine[lno] is defined %}
+                    {% set btnLines = '' %}
+                    {% for btnLine in objet.btnsLine[lno] %}
+                        {% set btnLines  = btnLines ~ '|' ~ btnLine %}
+                    {% endfor %}
+                    {% if btnLines|length > 0 %} {% set btnLines = substr(btnLines, 1) %} {% endif %}
+                        cnoActions" data-cno="action"  data-btnactions="{{ btnLines }}{% endif %}" ></td>
+                {% endif %}
+            </tr>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        </tbody>
+    </table>
+    {% if objet.pagination %}
+    <div class="navigation col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        {{ gotRender(objet.navbarBtns) }}
+    </div>
+    {% endif %}
+
+    {% if btnActions %}
+    <div id="{{ objet.id }}BtnsAction" style="display: none;">
+        {% for btnAction, params in objet.btnActions %}
+            {{ gotRender(btnAction) }}
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <script id="{{ objet.id }}Scripts">
+    {% if objet.event is not empty %}
+        $(document).ready(function (e) {
+            {% include "zf3-graphic-object-templating/oobjects/events.twig" with { events:objet.event } %}
+        });
+    {% endif %}
+        addBtnActions('{{ objet.id }}');
+    </script>
+
+    {% include "zf3-graphic-object-templating/oobjects/infoBulle.js.twig" with {'infoBulle':objet.infoBulle, 'id':objet.id} %}
+</div>

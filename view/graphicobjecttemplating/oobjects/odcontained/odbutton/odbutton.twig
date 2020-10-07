@@ -1,0 +1,110 @@
+{# template de l'objet ODButton #}
+
+{% set btnClasses = '' %}
+{% set widthBT = '' %}
+{% if objet.width is empty and objet.height is empty %} {% set widthBT = objet.widthBT %} {% endif %}
+{% set objClasses = 'gotObject hidden ' ~ objet.id ~ " " ~ objet.classes %}
+{% if objet.event is not empty and objet.type != 'link' %}{% set objClasses = objClasses ~ ' btnCback ' %}{% endif %}
+
+<style>
+    {% if objet.width is not empty %}
+    {% set btnClasses = btnClasses ~ ' width' %}
+        #{{ objet.id }} .width { width: {{ objet.width }} !important; } 
+    {% endif %}
+
+    {% if objet.height is not empty %}
+    {% set btnClasses = btnClasses ~ ' height' %}
+    #{{ objet.id }} .height { height: {{ objet.height}} !important; } {% endif %}
+
+    {% if objet.width is not empty or objet.height is not empty %}
+    #{{ objet.id }} {
+        float: left;
+        padding: 0 2px !important;
+    }
+    {% endif %}
+
+    {% if btnClasses is empty %}#{{ objet.id }} button { width: 100% } {% endif %}
+
+    {% if objet.custom is not empty %}
+    .{{ objet.id }} .btn-custom {
+        color: #{{ objet.customColor }};
+        background-color: #{{ objet.custom }};
+        border-color: #{{ objet.customBorder }};
+    }
+    {% endif %}
+
+    {% if objet.pathFile is not empty %}
+    .{{ objet.id }} .ico-custom {
+        display:block;
+        background:black;
+        color:white;
+        text-decoration:none;
+    }
+    .{{ objet.id }} .ico-custom:before{
+        content: '';
+        background: url("{{ objet.pathFile }}");
+        background-size: cover;
+        position:absolute;
+        width:{{ objet.width }};
+        height:{{ objet.height }};
+        left: {{ objet.left }};
+        top: 0;
+    }
+    {% endif %}
+</style>
+
+{% if objet.type == 'link' %}
+    {% if objet.event.click is defined %}
+        {% set route  = objet.event.click.class %}
+        {% set params = objet.event.click.method %}
+        {% if params is empty %}
+            {% set routeUrl = ( url(route|lower) ) %}
+        {% else %}
+            {% set routeUrl = ( url(route|lower, params) ) %}
+        {% endif %}
+    {% endif %}
+{% endif %}
+
+{% if objet.icon is not empty %}
+    {% set icoClass = objet.icon %}
+{% elseif objet.pathFile is not empty %}
+    {% set icoClass = "ico-custom" %}
+{% else %}
+    {% set icoClass = "" %}
+{% endif %}
+
+<div id="{{ objet.id }}" data-objet="{{ objet.object }}" class="{{ objClasses }}"
+     data-role="{{ objet.type }}"
+     data-default="
+        {% if objet.default  is same as(false) %}false
+        {% elseif objet.default  is same as(true) %}true
+        {% else %}{{ objet.default }}
+        {% endif %}
+    "
+    {% if widthBT is not empty %}data-widthbt="{{ widthBT }}" {% endif %}
+    {% if objet.display is not empty %}data-display="{{ objet.display}}" {% endif %}
+    {% if objet.form is not empty %} data-form="{{ objet.form }}" {% endif %}
+
+    {% if objet.type != 'reset' and objet.type != 'link' %}
+        {% include "graphicobjecttemplating/oobjects/eventsHTML.twig" with {'events':objet.event} %}
+    {% endif %}
+>
+    <button class="{{ objet.nature }} {{ btnClasses }}"
+        {% if objet.type == 'link' %} onclick="location.href='{{ routeUrl }}'" {% endif %}
+        {% if objet.value is defined and objet.value is not empty %} data-value="{{ objet.value }}" {% endif %}
+        {% if objet.state == false %} disabled {% endif %}
+    >
+        {% if icoClass is not empty %}<i class="{{ icoClass }}"></i>{% endif %}{{ objet.label }}
+    </button>
+
+{#    {% if objet.type != 'link' and objet.event is not empty and objet.form is empty %}#}
+    {% if objet.type != 'link' and objet.event is not empty %}
+    <script>
+        $(document).ready(function (e) {
+            {% include "graphicobjecttemplating/oobjects/eventsJS.twig" with {'events':objet.event} %}
+        });
+    </script>
+    {% endif %}
+
+    {% include "graphicobjecttemplating/oobjects/infoBulle.js.twig" with {'infoBulle':objet.infoBulle, 'id':objet.id} %}
+</div>
