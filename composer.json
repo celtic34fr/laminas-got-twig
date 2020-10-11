@@ -22,7 +22,7 @@
     "prefer-stable": true,
     "require": {
         "php": "^7.4",
-        "celtic34fr/laminas-got": "@dev"
+        "celtic34fr/laminas-got": ">=0.0.1"
     },
     "autoload": {
         "psr-4": {
