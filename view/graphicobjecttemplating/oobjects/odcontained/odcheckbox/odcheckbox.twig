@@ -1,0 +1,133 @@
+{# template de l'objet ODCheckbox #}
+
+{% set objClasses = 'gotObject hidden ' ~ objet.id ~ ' ' ~ objet.classes %}
+
+<div id="{{ objet.id }}" data-objet="{{ objet.object }}" class="{{ objClasses }}"
+        {% if objet.state == false %} checkbox disabled {% endif %}
+        {% if objet.display is not empty %} data-display="{{ objet.display }}" {% endif %}
+        {% if objet.widthBT is not empty %} data-widthbt="{{ objet.widthBT }}" {% endif %}
+        {% if objet.form is not empty %} data-form="{{ objet.form }}" {% endif %}
+        {% if objet.state == false %}  disabled {% endif %} {% if objet.event is not empty %} checkboxCback {% endif %}
+        {% if objet.event is not empty %}
+        {% include "graphicobjecttemplating/oobjects/eventsHTML.twig" with {'events':objet.event} %}
+>
+    <style>
+        {% if objet.placement == "right" %}
+        #{{ objet.id }} label {
+            padding-left: 2em;
+        }
+
+        {% endif %}
+
+        #{{ objet.id }} input {
+            position: relative !important;
+            margin: 0 5px !important;
+            top: -1px;
+        }
+
+        #{{ objet.id }} div label {
+            position: relative;
+            top: -0.3em;
+        {% if options|length == 1) %} font-weight: bold;
+        {% endif %}
+        }
+    </style>
+    {% if objet.label is not empty %}
+        <label {% if objet.labelWidthBT is not empty %} data-widthbt="{{ objet.labelWidthBT }}" {% endif %}
+                style="float: left;">
+            {{ objet.label }}
+        </label>
+    {% endif %}
+    <div class="checkboxes" style="float: left;"
+            {% if objet.label is not empty and objet.inputWidthBT is not empty %}
+                data-widthbt="{{ objet.inputWidthBT }}"
+            {% endif %}
+    >
+        {% set loop = -1 %}
+        {% for option in objet.options %}
+        {% loop = loop +1 %}
+        {% if option.type == constant('GraphicObjectTemplating\\OObjects\\ODContained\\ODCheckbox::CHECKTYPE_CHECKBOX') %}
+            <div class="{{ option.nature }}
+    {% if options|length === 1) %}
+        col-lg-12 col-md-12 col-sm-12 col-xs-12
+    {% endif %}">
+                {% if objet.placement != 'right' %}
+                    <label for="{{ objet.id ~ loop }}"
+                            {% if objet.options|length == 1 and objet.labelWidthBT is not empty %}
+                                data-widthbt="{{ objet.labelWidthBT }}"
+                            {% endif %}
+                            {% if objet.options|length > 1 and objet.checkLabelWidthBT is not empty %}
+                                data-widthbt="{{ objet.checkLabelWidthBT }}"
+                            {% endif %}
+                           style="text-align: center">
+                        {{ option.libel }}
+                    </label>
+                {% endif %}
+                <input id="{{ objet.id ~ loop }}" type="checkbox" value="{{ objet.value }}"
+                        {% if option.state == false or objet.state == false %} disabled {% endif %}
+                        {% if option.check == 'check') %} checked {% endif %}
+                        {% if objet.options|length == 1 and objet.inputWidthBT is not empty %}
+                            data-widthbt="{{ objet.inputWidthBT }}"
+                        {% endif %}
+                        {% if objet.options|length > 1 and objet.checkInputWidthBT is not empty %}
+                            data-widthbt="{{ objet.checkInputWidthBT }}"
+                        {% endif %}
+                >
+                {% if objet.placement == "right" %}
+                    <label for="{{ objet.id ~loop }}"
+                            {% if objet.options|length === 1 and objet.labelWidthBT is not empty %}
+                                data-widthbt="{{ objet.labelWidthBT }}"
+                            {% endif %}
+                            {% if objet.options[|length] > 1 and objet.checkLabelWidthBT is not empty %}
+                                data-widthbt="{{ objet.checkLabelWidthBT }}"
+                            {% endif %}
+                           style="text-align: center">
+                        {{ option.libel }}
+                    </label>
+                {% endif %}
+            </div>
+            {% elif option.type == constant('GraphicObjectTemplating\\OObjects\\ODContained\\ODCheckbox::CHECKTYPE_SWITCH') %}
+            <div class="switch">
+                <style>
+                    .switch label input[type="checkbox"]:checked + .lever {
+                        background-color: #{{ option.backgrYes }};
+                    }
+
+                    .switch label input[type="checkbox"]:checked + .lever:after {
+                        left: 1.5rem;
+                        background-color: #{{ option.natureYes }};
+                    }
+
+                    .switch label .lever {
+                        background-color: #{{ option.backgrNo }};
+                    }
+
+                    .switch label .lever:after {
+                        background-color: #{{ option.natureNo }};
+                    }
+                </style>
+                <label>
+                    {{ option.libelNo }}
+                    <input type="checkbox" checked>
+                    <span class="lever"></span> {{ option.libelYes }}
+                </label>
+            </div>
+        {% endif %}
+        {% endif %}
+    </div>
+
+    <script id="{{ objet.id }}Script" type="text/javascript">
+        $("#{{ objet.id }} label").each(function () {
+            setBtClasses($(this), $(this).data("widthbt"));
+        });
+        $("#{{ objet.id }} input").each(function () {
+            setBtClasses($(this), $(this).data("widthbt"));
+        });
+
+        {% if objet.event is not empty %}
+        $(document).ready(function (e) {
+            {% include "graphicobjecttemplating/oobjects/eventsJS.twig" with {'events':objet.event} %}
+        });
+        {% endif %}
+    </script>
+</div>

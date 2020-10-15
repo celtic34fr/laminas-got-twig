@@ -9,20 +9,20 @@
                     {{ objet.id }}Lobibox.notify.DEFAULTS = $.extend({}, {{ objet.id }}Lobibox.notify.DEFAULTS, {
                         title: true,
                         size: '{{ objet.size }}',
-                        showClass: 'zoomIn',
-                        hideClass: 'zoomOut',
-                        icon: true,
+                        showClass: '{{ objet.showClass }}',
+                        hideClass: '{{ objet.hideClass }}',
+                        icon: {{ objet.icon }},
                         msg: '',
                         img: null,
-                        closable: true,
+                        closable: {{ objet.closable }},
                         delay: {{ objet.delay }},
-                        delayIndicator: true,
+                        delayIndicator: {{ objet.delayIndicator }},
                         closeOnClick: {{ objet.closeOnClick }},
                         width: {{ objet.width }},
                         position: "{{ objet.position }}",
-                        iconSource: "bootstrap",
+                        iconSource: "{{ objet.iconSource }}",
                         sound: {{ (objet.sound) ? 'true' : 'false' }},
-                        {% if objet.sound %}
+                        {% if objet.sound == constant('GraphicObjectTemplating\\OObjects\\OObject::BOOLEAN_TRUE') %}
                         soundPath: '{{ objet.soundPath }}',
                         soundExt: '{{ objet.soundExt }}',
                         {% endif %}
@@ -41,7 +41,9 @@
             {{ objet.id }}Lobibox.notify('{{ objet.type }}', {
                 showAfterPrevious: {{ objet.showAfterPrevious ? 'true' : 'false' }},
                 {% if objet.title is not empty %} title: '{{ objet.title }}', {% endif %}
-                {% if objet.sound == false %} sound: false, {% endif %}
+                {% if objet.sound == constant('GraphicObjectTemplating\\OObjects\\OObject::BOOLEAN_FALSE') %}
+                sound: false,
+                {% endif %}
                 delay: {{ objet.delay }},
                 msg: '{{ objet.body }}'
             });
@@ -53,7 +55,9 @@
                 {{ objet.id }}Lobibox.notify('{{ objet.type }}', {
                     showAfterPrevious: {{ objet.showAfterPrevious ? 'true' : 'false' }},
                     {% if objet.title is not empty %} title: '{{ objet.title }}', {% endif %}
-                    {% if objet.sound == false %} sound: false, {% endif %}
+                    {% if objet.sound == constant('GraphicObjectTemplating\\OObjects\\OObject::BOOLEAN_FALSE') %}
+                    sound: false,
+                    {% endif %}
                     delay: {{ objet.delay }},
                     msg: '{{ objet.body }}'
                 });

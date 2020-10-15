@@ -17,10 +17,14 @@
      data-widthbt="{{ objet.widthBT }}" {% if objet.form is not empty %} data-form="{{ objet.form }}" {% endif %}
         {% include "graphicobjecttemplating/oobjects/eventsHTML.twig" with {'events':objet.event} %}
         {% if objet.mask is not empty %} data-mask="{{ objet.mask }}" {% endif %}
-     data-default="{{ objet.default ?: 'none' }}"
+     data-default="
+     {% if objet.default == false) %}false{% elseif objet.default == true %}true{% else %}{{ objet.default }}{% endif %}
+     "
+{{ objet.default ?: 'none' }}
 >
     <style>
-        {% if objet.type == constant('GraphicObjectTemplating\\OObjects\\ODContained\\ODInput::INPUTTYPE_PASSWORD') and objet.reveal_pwd %}
+        {% if objet.type == constant('GraphicObjectTemplating\\OObjects\\ODContained\\ODInput::INPUTTYPE_PASSWORD')
+                and objet.reveal_pwd %}
         span.field-icon {
             position: absolute;
             display: inline-block;
@@ -41,20 +45,21 @@
             {% if objet.minlength is not empty %} minlength="{{ objet.minlength }}" {% endif %}
             {% if objet.maxlength is not empty %} maxlength="{{ objet.maxlength }}" {% endif %}
             {% if objet.inputWidthBT is not empty %} data-widthbt="{{ objet.inputWidthBT }}" {% endif %}
-            {% if objet.autoFocus %} autofocus="autofocus" {% endif %} {% if objet.state == false %} disabled {% endif %}
-           class="form-control-got"
+            {% if objet.autoFocus %} autofocus="autofocus" {% endif %}
+            {% if objet.state == false %} disabled {% endif %}
+            class="form-control-got"
             {% if objet.type == 'number' %}
                 {% if objet.valMin is defined and objet.valMin is not empty %} data-valMin="{{ objet.valMin }}" {% endif %}
                 {% if objet.valMax is defined and objet.valMax is not empty %} data-valMax="{{ objet.valMax }}" {% endif %}
             {% endif %}
             {% if objet.mask is not empty %}data-mask="{{ objet.mask }}"{% endif %}
             {% if objet.placeholder is not empty %}placeholder="{{ objet.placeholder }}"{% endif %}
-            {% if objet.type == "password" %}name="{{ objet.id }}"{% endif %}
     >
     {% if objet.type == constant('GraphicObjectTemplating\\OObjects\\ODContained\\ODInput::INPUTTYPE_PASSWORD') and objet.reveal_pwd %}
         <span class="fa fa-fw fa-eye field-icon reveal"></span>
     {% endif %}
     <span class="help-block hidden"></span>
+    <span class="error hidden"></span>
 
     <script>
         $(document).ready(function (evt) {
@@ -77,15 +82,19 @@
             });
             {% endif %}
 
-            {# #}{# {% if objet.mask is not empty %} $("#{{ objet.id }} input").mask("{{ objet.mask }}"); {% endif %} #}
+            {% if objet.mask is not empty %} $("#{{ objet.id }} input").mask("{{ objet.mask }}"); {% endif %}
 
-            {# #}{# {% if objet.autoFocus %} #}
-            {# #}{# {% include "graphicobjecttemplating/oobjects/autoFocus.js.twig" with {id : (objet.id ~ 'Input')} %} #}
-            {# #}{# {% endif %} #}
+            {% if objet.autoFocus %}
+            {% include "graphicobjecttemplating/oobjects/autoFocus.js.twig" with {id : (objet.id ~ 'Input')} %}
+            {% endif %}
 
-            {# #}{# {% if objet.event is not empty %} #}
-            {# #}{# {% include "graphicobjecttemplating/oobjects/eventsJS.twig" with { events:objet.event } %} #}
-            {# #}{# {% endif %} #}
+            {% if objet.event is not empty %}
+            {% include "graphicobjecttemplating/oobjects/eventsJS.twig" with { events:objet.event } %}
+            {% endif %}
+
+{#            {% if objet.infoBulle is not empty %}#}
+{#            {% include "graphicobjecttemplating/oobjects/infoBulle.js.twig" with { infoBulle:objet.infoBulle, id:objet.id } %}#}
+{#            {% endif %}#}
         });
     </script>
 
