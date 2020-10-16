@@ -33,6 +33,8 @@
         </div>
     {% endif %}
 
+    <span class="error hidden"></span>
+
     {# ###########################################################################################################
         ATTENTION : tout champ permettant une saisie d'information devra avoir une balise HTML label
         ceci pour permettre la mise en place de l'étoile rouge à gauche du texte inclus pour indiquer l'ensemble
@@ -54,11 +56,11 @@
                 }
             })
         }
-        {% if objet.fields is not empty %}
+        {% if objet.required is not empty %}
         function {{ objet.id }}Script() {
             var require = '<span style="color:red;float:left;width:10px;";>*&nbsp;</span>';
             var topRequire = false;
-            {% for ident, bool in objet.fields %}
+            {% for ident, bool in objet.required %}
             {% if bool %}
             $("#{{ ident }}").addClass('require');
             var mark = $("#{{ ident }} label span");

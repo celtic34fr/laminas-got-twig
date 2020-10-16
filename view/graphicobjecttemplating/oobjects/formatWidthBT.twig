@@ -1,0 +1,47 @@
+{% macro formatWidthBT(val) %}
+    {% set lxs = 0 %} {% set lsm = 0 %} {% set lmd = 0 %} {% set llg = 0 %}
+    {% set ixs = 0 %} {% set ism = 0 %} {% set imd = 0 %} {% set ilg = 0 %}
+    {% switch(true) %}
+        {% case (val matches '/^\\d+$/' and val|number_format =< 12) %}
+        {% set lxs = val|number_format %} {% set lsm = lxs %} {% set lmd = lxs %} {% set llg = lxs %}
+        {% set ixs = 12 - val|number_format %} {% set ism = ixs %} {% set imd = ixs %} {% set ilg = ixs %}
+        {% default %}
+        {% set Lval = val|split(':') %}
+        {% for item in Lval %}
+            {%  set key = item|upper %}
+            {% switch(key[:2]) %}
+            {% case "WL" %}
+                {% set llg = key[:2]|number_format %}
+            {% case "WM" %}
+                {% set lmd = key[:2]|number_format %}
+            {% case "WS" %}
+                {% set lsm = key[:2]|number_format %}
+            {% case "WX" %}
+                {% set lxs = key[:2]|number_format %}
+            {% case "OL" %}
+                {% set ilg = key[:2]|number_format %}
+            {% case "OM" %}
+                {% set imd = key[:2]|number_format %}
+            {% case "OS" %}
+                {% set ism = key[:2]|number_format %}
+            {% case "OX" %}
+                {% set ixs = key[:2]|number_format %}
+            {% default %}
+                {% switch(key[0]) %}
+                    {% case "W" %}
+                    {% set lxs = key[:1]|number_format %} {% set lsm = lxs %} {% set lmd = lxs %} {% set llg = lxs %}
+                    {% case "O" %}
+                    {% set ixs = key[:1]|number_format %} {% set ism = ixs %} {% set imd = ixs %} {% set ilg = ixs %}
+                {% endswitch %}
+            {% endswitch %}
+        {% endfor %}
+    {% endswitch %}
+    {% if llg >0 %} col-lg-{{ llg }} {% endif %}
+    {% if lmd >0 %} col-md-{{ lmd }} {% endif %}
+    {% if lsm >0 %} col-sm-{{ lsm }} {% endif %}
+    {% if lxs >0 %} col-xs-{{ lxs }} {% endif %}
+    {% if ilg >0 %} offset-lg-{{ ilg }} {% endif %}
+    {% if imd >0 %} offset-md-{{ imd }} {% endif %}
+    {% if ism >0 %} offset-sm-{{ ism }} {% endif %}
+    {% if ixs >0 %} offset-xs-{{ ixs }} {% endif %}
+{% endmacro %}

@@ -1,0 +1,27 @@
+{% macro formatEvents(evtsTabs, id, object) %}
+    {% for evt, evtTab in evtsTabs %}
+        {% for noline, params in evtTab %}
+            {% for noCol, item in params %}
+                {%  let selector = "#" ~ id ~ (noLine|number_format > 0 ? " lno"~noLine|number_format) : "" %}
+                {%  let selector = selector ~ (noCol|number_format > 0 ? " cno"~noCol|number_format) : "" %}
+                {{ selector }}.on("{{ evt }}", function(e) {
+                    let objetDom = $(this)
+                    let objet = new {{ objet }}(objetDom);
+                    var invalid = ''
+                    if (typeof objet.invalidate === "function") {
+                        invalid = objet.invalidate();
+                    }
+                    if (invalid.length === 0) {
+                        $(this).remove("has-error");
+                        $(this).find("span.error").removeClass("hidden").addClass("hidden");
+                        invokeAjax(objet.getData("{{ evt }}"), "{{ id }}", "{{ evt }}", e);
+                    } else {
+                        $(this).remove("has-error").addClass("has-error");
+                        $(this).find("span.error").removeClass("hidden");
+                        $(this).find("span.error").html(invalid);
+                    }
+                };
+            {% endfor %}
+        {% endfor %}
+    {% endfor %}
+{% endmacro %}

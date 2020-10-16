@@ -1,0 +1,11 @@
+{% macro formatStyles(stylesTab, id) %}
+    {% for noLine, params in stylesTab %}
+        {% for noCol, item in params %}
+            {%  let selector = "#" ~ id ~ (noLine|number_format > 0 ? " lno"~noLine|number_format) : "" %}
+            {%  let selector = selector ~ (noCol|number_format > 0 ? " cno"~noCol|number_format) : "" %}
+            {{ selector }} {
+                {{ item }}
+            }
+        {% endfor %}
+    {% endfor %}
+{% endmacro %}
