@@ -1,0 +1,93 @@
+{# template de l'objet ODTextarea #}
+
+{# pour le moment figé mais à changer en dynamique#}
+{% set locale = "fr-FR" %}
+
+{% set labelClass = labelClass ~ gotBootstrap(substr(labelWidth, 0, labelWidth|length - 1)) %}
+{% set textareaClass = textareaClass ~ gotBootstrap(textareaWidth) %}
+{% set objClasses = 'gotObject hidden ' ~ objet.id ~ " " ~ objet.classes %}
+
+<div id="{{ objet.id }}" class="{{ objClasses }}" data-objet="{{ objet.object }}" data-display="{{ objet.display }}"
+data-widthbt="{{ objet.widthBT }}" {% if objet.form is not empty %} data-form="{{ objet.form }}" {% endif %}
+{% include "zf3-graphic-object-templating/oobjects/eventsHTML.twig" with {'events':objet.event} %}
+data-wysiwyg="{% if objet.wysiwyg %}true{% else %}false{% endif %}"
+>
+    <style>
+        #{{ objet.id }} textarea {
+            resize: {{ objet.resize }};
+        }
+    </style>
+    {%  if objet.label is not empty or objet.icon is not empty %}
+    <label for="{{ objet.id }}Textarea"
+        {% if objet.labelWidthBT is not empty %} data-widthbt="{{ objet.labelWidthBT }}" {% endif %}
+    >
+        {% if objet.icon is defined %} <i class="{{ objet.icon }}"></i> {% endif %}
+        {{ objet.label }}
+    </label>
+    {% endif %}
+    <textarea id="{{ objet.id }}Textarea"
+        {% if objet.cols is not empty %} cols="{{ objet.cols }}" {% endif %}
+        {% if objet.rows is not empty %} rows="{{ objet.rows }}" {% endif %}
+        {% if objet.maxLength is not empty %} maxlength="{{ objet.maxLength }}" {% endif %}
+        {% if textareaClass is not empty %} class="{{ textareaClass }}" {% endif %}
+        {% if objet.placeholder is not empty %} placeholder="{{ objet.placeholder }}" {% endif %}
+        {% if objet.textareaWidthBT is not empty %} data-widthbt="{{ objet.textareaWidthBT }}" {% endif %}
+        {% if not objet.state %} disabled {% endif %}
+    >{{ objet.text | raw }}</textarea>
+
+
+    <script id="{{ objet.id }}Scripts">
+        $(document).ready(function (e) {
+            setBtClasses("#{{ objet.id }} label", $("#{{ objet.id }} label").data("widthbt"));
+            setBtClasses("#{{ objet.id }} textarea", $("#{{ objet.id }} textarea").data("widthbt"));
+
+            {% if objet.wysiwyg %}
+            tinymce.init({
+                selector: '#{{ objet.id }} textarea',
+                plugins: [ '{{ objet.plugins }}' ],
+                menu: {
+                    file: {title: 'File', items: 'newdocument preview', }
+                },
+                toolbar: [ "{{ objet.toolbar }}" ],
+                content_css : ["{{ basePath('graphicobjecttemplating/oobjects/odcontained/odtextarea/js/tinymce/assets/css/blocks.css') }}",
+                    "{{ basePath('graphicobjecttemplating/oobjects/odcontained/odtextarea/js/tinymce/assets/css/app.css') }}",
+                    "{{ basePath('graphicobjecttemplating/oobjects/odcontained/odtextarea/js/tinymce/assets/css/custom.css') }}",
+                    "{{ basePath('graphicobjecttemplating/oobjects/odcontained/odtextarea/js/tinymce/assets/plugins/bootstrap/css/bootstrap.min.css') }}",
+                    "{{ basePath('graphicobjecttemplating/oobjects/odcontained/odtextarea/js/tinymce/assets/plugins/cube-portfolio/cubeportfolio/css/cubeportfolio.min.css') }}"],
+            {% if objet.imgListUrl is not empty %}
+                image_list: "{{ objet.imgListUrl }}",
+                image_advtab: true,
+            {% endif %}
+            {% if objet.lnkListUrl is not empty %}
+                link_list: "{{ objet.lnkListUrl }}",
+            {% endif %}
+                relative_urls : false,
+                remove_script_host : true,
+            });
+            {% endif %}
+
+            {% if objet.event is not empty %}
+            {% include "zf3-graphic-object-templating/oobjects/events.twig" with { events:objet.event } %}
+            {% endif %}
+        })
+    </script>
+
+    {% include "zf3-graphic-object-templating/oobjects/infoBulle.js.twig" with {'infoBulle':objet.infoBulle, 'id':objet.id} %}
+</div>
+{#
+// menubar: "insert",
+// toolbar: "link image numlist bullist charmap",
+// image_list: "/contenu/imageList"
+
+                plugins: [
+                    "advlist autolink lists link image charmap print preview anchor",
+                    "searchreplace visualblocks code fullscreen",
+                    "insertdatetime media table contextmenu paste",
+                    "importcss"
+                ],
+
+                toolbar: ["insertfile undo redo | styleselect | bold italic forecolor backcolor ",
+                    "| alignleft aligncenter alignright alignjustify | link image media table ",
+                    "| numlist bullist outdent indent  | removeformat",
+                    ],
+#}
