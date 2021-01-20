@@ -9,7 +9,7 @@
 
 <div id="{{ objet.id }}" class="{{ objClasses }}" data-objet="{{ objet.object }}" data-display="{{ objet.display }}"
 data-widthbt="{{ objet.widthBT }}" {% if objet.form is not empty %} data-form="{{ objet.form }}" {% endif %}
-{% include "zf3-graphic-object-templating/oobjects/eventsHTML.twig" with {'events':objet.event} %}
+{% include "zf3-graphic-object-templating/oobjects/macros/eventsHTML.twig" with {'events':objet.event} %}
 data-wysiwyg="{% if objet.wysiwyg %}true{% else %}false{% endif %}"
 >
     <style>
@@ -72,7 +72,7 @@ data-wysiwyg="{% if objet.wysiwyg %}true{% else %}false{% endif %}"
         })
     </script>
 
-    {% include "zf3-graphic-object-templating/oobjects/infoBulle.js.twig" with {'infoBulle':objet.infoBulle, 'id':objet.id} %}
+    {% include "zf3-graphic-object-templating/oobjects/macros/infoBulle.js.twig" with {'infoBulle':objet.infoBulle, 'id':objet.id} %}
 </div>
 {#
 // menubar: "insert",

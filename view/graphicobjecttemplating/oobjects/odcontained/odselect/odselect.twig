@@ -11,7 +11,7 @@
 
 <div id="{{ objet.id }}" data-objet="{{ objet.object }}" data-display="{{ objet.display }}" class="{{ objClasses }}"
      data-widthbt="{{ objet.widthBT }}" {% if objet.form|length > 0 %} data-form="{{ objet.form }}" {% endif %}
-    {% include "zf3-graphic-object-templating/oobjects/eventsHTML.twig" with {'events':objet.event} %}
+    {% include "zf3-graphic-object-templating/oobjects/macros/eventsHTML.twig" with {'events':objet.event} %}
 >
 
     <label for="{{ objet.id }}Select" class="{{ labelClass }}"
@@ -40,7 +40,7 @@
             setBtClasses("#{{ objet.id }} select", $("#{{ objet.id }} select").data("widthbt"));
 
             {% if objet.event is not empty %}
-            {% include "zf3-graphic-object-templating/oobjects/eventsJS.twig" with { events:objet.event } %}
+            {% include "zf3-graphic-object-templating/oobjects/macros/eventsJS.twig" with { events:objet.event } %}
             {% endif %}
         })
     </script>

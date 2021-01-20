@@ -2,7 +2,7 @@
 
 {% import "graphicobjecttemplating/oobjects/odcontained/odtable/formatEvents.twig" as macros %}
 {% import "graphicobjecttemplating/oobjects/odcontained/odtable/formatStyles.twig" as macros %}
-{% import "graphicobjecttemplating/oobjects/formatWidthBT.twig" as macros %}
+{% import "graphicobjecttemplating/oobjects/macros/formatWidthBT.twig" as macros %}
 
 {% set objClasses = 'gotObject hidden ' ~ objet.id ~ " " ~ objet.classes %}
 {% set btnActions = false %}
@@ -11,7 +11,7 @@
 <div id="{{ objet.id }}" class="{{ objClasses }}" data-objet="{{ objet.object }}" data-display="{{ objet.display }}"
 data-widthbt="{{ objet.widthBT }}"
      {% if objet.event|length > 0 %}
-         {% include "graphicobjecttemplating/oobjects/eventsHTML.twig" with {'events':objet.event} %}
+         {% include "graphicobjecttemplating/oobjects/macros/eventsHTML.twig" with {'events':objet.event} %}
     {% endif %}
 >
     <style>
@@ -182,5 +182,5 @@ data-widthbt="{{ objet.widthBT }}"
         {#addBtnActions('{{ objet.id }}');#}
     </script>
 
-{#    {% include "zf3-graphic-object-templating/oobjects/infoBulle.js.twig" with {'infoBulle':objet.infoBulle, 'id':objet.id} %}#}
+{#    {% include "zf3-graphic-object-templating/oobjects/macros/infoBulle.js.twig" with {'infoBulle':objet.infoBulle, 'id':objet.id} %}#}
 </div>

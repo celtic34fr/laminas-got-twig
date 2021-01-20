@@ -15,7 +15,7 @@
 
 <div id="{{ objet.id }}" class="{{ objClasses }}" data-objet="{{ objet.object }}" data-display="{{ objet.display }}"
      data-widthbt="{{ objet.widthBT }}" {% if objet.form is not empty %} data-form="{{ objet.form }}" {% endif %}
-        {% include "graphicobjecttemplating/oobjects/eventsHTML.twig" with {'events':objet.event} %}
+        {% include "graphicobjecttemplating/oobjects/macros/eventsHTML.twig" with {'events':objet.event} %}
         {% if objet.mask is not empty %} data-mask="{{ objet.mask }}" {% endif %}
      data-default="
      {% if objet.default == false) %}false{% elseif objet.default == true %}true{% else %}{{ objet.default }}{% endif %}
@@ -89,14 +89,14 @@
             {% endif %}
 
             {% if objet.event is not empty %}
-            {% include "graphicobjecttemplating/oobjects/eventsJS.twig" with { events:objet.event } %}
+            {% include "graphicobjecttemplating/oobjects/macros/eventsJS.twig" with { events:objet.event } %}
             {% endif %}
 
 {#            {% if objet.infoBulle is not empty %}#}
-{#            {% include "graphicobjecttemplating/oobjects/infoBulle.js.twig" with { infoBulle:objet.infoBulle, id:objet.id } %}#}
+{#            {% include "graphicobjecttemplating/oobjects/macros/infoBulle.js.twig" with { infoBulle:objet.infoBulle, id:objet.id } %}#}
 {#            {% endif %}#}
         });
     </script>
 
-    {% include "graphicobjecttemplating/oobjects/infoBulle.js.twig" with {'infoBulle':objet.infoBulle, 'id':objet.id} %}
+    {% include "graphicobjecttemplating/oobjects/macros/infoBulle.js.twig" with {'infoBulle':objet.infoBulle, 'id':objet.id} %}
 </div>

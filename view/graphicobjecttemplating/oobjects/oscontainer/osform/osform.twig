@@ -11,7 +11,7 @@
         {% include 'graphicobjecttemplating/oobjects/oscontainer/style.twig'  with { codeCss:objet.codeCss } %}
         {% endif %}
         {% if objet.autoCenter %}
-        {% include 'graphicobjecttemplating/oobjects/autoCenter.twig' with {id:objet.id, acPx:objet.acPx, acPy:objet.acPy } %}
+        {% include 'graphicobjecttemplating/oobjects/macros/autoCenter.twig' with {id:objet.id, acPx:objet.acPx, acPy:objet.acPy } %}
         {% endif %}
     </style>
 

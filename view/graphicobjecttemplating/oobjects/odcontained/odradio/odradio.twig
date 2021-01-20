@@ -7,7 +7,7 @@
     {% if objet.display is not empty %} data-display="{{ objet.display }}" {% endif %}
     {% if objet.widthBT is not empty %} data-widthbt="{{ objet.widthBT }}" {% endif %}
     {% if objet.form is not empty %} data-form="{{ objet.form }}" {% endif %}
-    {% include "zf3-graphic-object-templating/oobjects/eventsHTML.twig" with {'events':objet.event} %}
+    {% include "zf3-graphic-object-templating/oobjects/macros/eventsHTML.twig" with {'events':objet.event} %}
 >
     <div class="radioLabel {{ objet.forme }}"
         {% if objet.labelWidthBT is not empty %} data-widthbt="{{ objet.labelWidthBT }}" {% endif %}">
@@ -32,11 +32,11 @@
             setBtClasses("#{{ objet.id }} .radionBtns", $("#{{ objet.id }} .radionBtns").data("widthbt"));
 
             {% if objet.event is not empty %}
-            {% include "zf3-graphic-object-templating/oobjects/eventsJS.twig" with { events:objet.event } %}
+            {% include "zf3-graphic-object-templating/oobjects/macros/eventsJS.twig" with { events:objet.event } %}
             {% endif %}
         })
     </script>
 
-    {% include "zf3-graphic-object-templating/oobjects/infoBulle.js.twig" with {'infoBulle':objet.infoBulle, 'id':objet.id} %}
+    {% include "zf3-graphic-object-templating/oobjects/macros/infoBulle.js.twig" with {'infoBulle':objet.infoBulle, 'id':objet.id} %}
 </div>
 

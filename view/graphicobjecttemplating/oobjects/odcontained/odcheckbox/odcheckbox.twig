@@ -9,7 +9,7 @@
         {% if objet.form is not empty %} data-form="{{ objet.form }}" {% endif %}
         {% if objet.state == false %}  disabled {% endif %} {% if objet.event is not empty %} checkboxCback {% endif %}
         {% if objet.event is not empty %}
-        {% include "graphicobjecttemplating/oobjects/eventsHTML.twig" with {'events':objet.event} %}
+        {% include "graphicobjecttemplating/oobjects/macros/eventsHTML.twig" with {'events':objet.event} %}
 >
     <style>
         {% if objet.placement == "right" %}
@@ -126,7 +126,7 @@
 
         {% if objet.event is not empty %}
         $(document).ready(function (e) {
-            {% include "graphicobjecttemplating/oobjects/eventsJS.twig" with {'events':objet.event} %}
+            {% include "graphicobjecttemplating/oobjects/macros/eventsJS.twig" with {'events':objet.event} %}
         });
         {% endif %}
     </script>
